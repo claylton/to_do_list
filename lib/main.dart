@@ -43,11 +43,12 @@ class _HomePageState extends State<HomePage> {
           itemCount: widget.items.length,
           itemBuilder: (BuildContext context, int index) {
             final item = widget.items[index];
+
             return CheckboxListTile(
               title: Text(item.title),
               key: Key(item.title),
               value: item.done,
-              onChanged: (value) {},
+              onChanged: (value) => setState(() => item.done = value ?? false),
             );
           },
         ));
