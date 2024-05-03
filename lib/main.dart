@@ -25,14 +25,14 @@ class MyApp extends StatelessWidget {
 class HomePage extends StatefulWidget {
   List<Item> items = <Item>[];
 
-  HomePage({super.key});
-
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
   TextEditingController newTaskController = TextEditingController();
+  Color purpleColor = const Color(0xFF7D44E3);
+  Color redColor = const Color(0xFFBF3939);
 
   void addTask() {
     if (newTaskController.text.isNotEmpty) {
@@ -78,6 +78,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: purpleColor,
           title: TextFormField(
             controller: newTaskController,
             keyboardType: TextInputType.text,
@@ -99,11 +100,12 @@ class _HomePageState extends State<HomePage> {
             return Dismissible(
               key: Key(item.title),
               background: Container(
-                color: Colors.red.withOpacity(0.2),
+                color: redColor,
               ),
               child: CheckboxListTile(
                 title: Text(item.title),
                 value: item.done,
+                activeColor: purpleColor ,
                 onChanged: (value) {
                   setState(() {
                     item.done = value ?? false;
@@ -117,7 +119,7 @@ class _HomePageState extends State<HomePage> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: addTask,
-          backgroundColor: Colors.blue,
+          backgroundColor: purpleColor,
           child: const Icon(Icons.add),
         ));
   }
