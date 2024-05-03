@@ -25,6 +25,8 @@ class MyApp extends StatelessWidget {
 class HomePage extends StatefulWidget {
   List<Item> items = <Item>[];
 
+  HomePage({super.key});
+
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -37,6 +39,7 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         widget.items.add(Item(title: newTaskController.text, done: false));
         newTaskController.clear();
+        saveTask();
       });
     }
   }
@@ -44,7 +47,13 @@ class _HomePageState extends State<HomePage> {
   void removeTask(int index) {
     setState(() {
       widget.items.removeAt(index);
+      saveTask();
     });
+  }
+
+  Future<void> saveTask() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('data', jsonEncode(widget.items));
   }
 
   Future<void> loadTask() async {
@@ -95,7 +104,12 @@ class _HomePageState extends State<HomePage> {
               child: CheckboxListTile(
                 title: Text(item.title),
                 value: item.done,
-                onChanged: (value) => setState(() => item.done = value ?? false),
+                onChanged: (value) {
+                  setState(() {
+                    item.done = value ?? false;
+                    saveTask();
+                  });
+                },
               ),
               onDismissed: (direction) => removeTask(index),
             );
