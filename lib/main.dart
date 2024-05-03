@@ -35,6 +35,15 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   TextEditingController newTaskController = TextEditingController();
 
+  void addTask() {
+    if (newTaskController.text.isNotEmpty) {
+      setState(() {
+        widget.items.add(Item(title: newTaskController.text, done: false));
+        newTaskController.clear();
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,6 +73,11 @@ class _HomePageState extends State<HomePage> {
               onChanged: (value) => setState(() => item.done = value ?? false),
             );
           },
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: addTask,
+          backgroundColor: Colors.blue,
+          child: const Icon(Icons.add),
         ));
   }
 }
