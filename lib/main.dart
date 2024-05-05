@@ -17,19 +17,20 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomePage(),
+      home: const HomePage(),
     );
   }
 }
 
 class HomePage extends StatefulWidget {
-  List<Item> items = <Item>[];
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  List<Item> items = <Item>[];
   TextEditingController newTaskController = TextEditingController();
   Color purpleColor = const Color(0xFF7D44E3);
   Color redColor = const Color(0xFFBF3939);
@@ -37,7 +38,7 @@ class _HomePageState extends State<HomePage> {
   void addTask() {
     if (newTaskController.text.isNotEmpty) {
       setState(() {
-        widget.items.add(Item(title: newTaskController.text, done: false));
+        items.add(Item(title: newTaskController.text, done: false));
         newTaskController.clear();
         saveTask();
       });
@@ -46,14 +47,14 @@ class _HomePageState extends State<HomePage> {
 
   void removeTask(int index) {
     setState(() {
-      widget.items.removeAt(index);
+      items.removeAt(index);
       saveTask();
     });
   }
 
   Future<void> saveTask() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('data', jsonEncode(widget.items));
+    await prefs.setString('data', jsonEncode(items));
   }
 
   Future<void> loadTask() async {
@@ -65,13 +66,15 @@ class _HomePageState extends State<HomePage> {
       List<Item> listItems = decoded.map((item) => Item.fromJson(item)).toList();
 
       setState(() {
-        widget.items = listItems;
+        items = listItems;
       });
     }
   }
 
-  _HomePageState() {
+  @override
+  void initState() {
     loadTask();
+    super.initState();
   }
 
   @override
@@ -93,9 +96,9 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         body: ListView.builder(
-          itemCount: widget.items.length,
+          itemCount: items.length,
           itemBuilder: (BuildContext context, int index) {
-            final item = widget.items[index];
+            final item = items[index];
 
             return Dismissible(
               key: Key(item.title),
@@ -105,7 +108,7 @@ class _HomePageState extends State<HomePage> {
               child: CheckboxListTile(
                 title: Text(item.title),
                 value: item.done,
-                activeColor: purpleColor ,
+                activeColor: purpleColor,
                 onChanged: (value) {
                   setState(() {
                     item.done = value ?? false;
