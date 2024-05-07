@@ -43,7 +43,8 @@
 
 ## 📱 Demonstração da aplicação
 <p align="center">
-  <img alt="Demo on Netlify" src="https://github.com/claylton/Dice-Roller/blob/main/readme-elements/dado%20gif.gif" height="500" width="250">
+  <img alt="Demo on Android" src="https://github.com/claylton/to_do_list/blob/main/readme_elements/android.gif" height="500" width="250">
+  <img alt="Demo on iOS" src="https://github.com/claylton/to_do_list/blob/main/readme_elements/ios.gif" height="500" width="250">
 </p>
 
 ---
